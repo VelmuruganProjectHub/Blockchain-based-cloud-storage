@@ -2,15 +2,16 @@ BLOCKCHAIN-POWERED SECURE CLOUD STORAGE WITH ENCRYPTED KEY MANAGEMENT
 
 ---
 
-ABSTRACT 
-  In today's digital landscape, data security and privacy are critical concerns. This 
+ABSTRACT
+
+In today's digital landscape, data security and privacy are critical concerns. This 
 project presents a blockchain-based secure storage system that ensures confidentiality, 
 integrity, and decentralized key management for uploaded files. The system allows users 
 to upload documents through a web interface, where files are encrypted using AES-GCM 
 before being securely stored in Google Drive. The encryption keys are stored on a 
 Hyperledger Fabric blockchain, ensuring immutability and preventing unauthorized 
-access. 
-  When a user requests a file, the system retrieves the encrypted file from Google 
+access.
+When a user requests a file, the system retrieves the encrypted file from Google 
 Drive, fetches the decryption key from the blockchain, and serves the decrypted file 
 securely. Additionally, an Admin Panel is included for monitoring user activities, 
 transactions, and blockchain logs. 
