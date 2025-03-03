@@ -1,0 +1,123 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:9.2.0
+    container_name: secure_storage_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: secure_storage
+      MYSQL_USER: secure_user
+      MYSQL_PASSWORD: secure_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - secure_network
+
+  # Hyperledger Fabric (Placeholder for Blockchain Integration)
+  fabric:
+    image: hyperledger/fabric-peer:latest
+    container_name: secure_storage_fabric
+    restart: always
+    environment:
+      - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+    volumes:
+      - fabric_data:/var/hyperledger/production
+    networks:
+      - secure_network
+
+  # Spring Boot Backend
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: secure_storage_backend
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/secure_storage?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: secure_user
+      SPRING_DATASOURCE_PASSWORD: secure_password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - fabric
+    networks:
+      - secure_network
+
+networks:
+  secure_network:
+
+volumes:
+  mysql_data:
+  fabric_data:
+
+
+# ---
+
+# Explanation of docker-compose.yml
+
+# 1. MySQL Database (mysql service)
+
+# Uses MySQL 9.2.0
+
+# Creates secure_storage database.
+
+# Volumes persist database data.
+
+# Ports: Exposes MySQL on port 3306.
+
+
+
+# 2. Hyperledger Fabric (fabric service)
+
+# Uses Hyperledger Fabric Peer for blockchain transactions.
+
+# Stores blockchain data in fabric_data volume.
+
+
+
+# 3. Spring Boot Backend (backend service)
+
+# Builds from Dockerfile (inside docker/).
+
+# Connects to MySQL using environment variables.
+
+# Exposes backend on port 8080.
+
+# Depends on MySQL & Hyperledger Fabric.
+
+
+
+# 4. Networks & Volumes
+
+# secure_network: Allows communication between services.
+
+# Volumes (mysql_data, fabric_data): Persist data across container restarts.
+
+
+
+
+
+# ---
+
+# Next Steps
+
+# 1. Create .dockerignore to ignore unnecessary files.
+
+
+# 2. Test Docker Setup
+
+# Run:
+
+# docker-compose up --build
+
+# Verify MySQL & Hyperledger Fabric are running.
+
+# Check Spring Boot logs.

@@ -1,0 +1,61 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: example.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Org2
+    Domain: org2.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+
+# ---
+
+# Explanation of crypto-config.yaml
+
+# 1. Orderer Organization
+
+# Defines a single orderer (orderer.example.com).
+
+# It manages transaction ordering in the Fabric network.
+
+
+
+# 2. Peer Organizations
+
+# Org1 (org1.example.com) and Org2 (org2.example.com).
+
+# Each peer organization has:
+
+# EnableNodeOUs: Enables identity roles (e.g., Admin, Peer, User).
+
+# Template Count: Creates 2 peers per organization.
+
+# Users Count: Generates 1 admin user per organization.
+
+
+
+
+
+
+# ---
+
+# Next Steps
+
+# 1. Generate cryptographic material using cryptogen tool.
+
+
+# 2. Create docker-compose.yaml to deploy Fabric network in Docker.

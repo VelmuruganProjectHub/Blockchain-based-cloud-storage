@@ -1,0 +1,128 @@
+Organizations:
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/example.com/msp
+
+  - &Org1
+    Name: Org1MSP
+    ID: Org1MSP
+    MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org1.example.com
+        Port: 7051
+
+  - &Org2
+    Name: Org2MSP
+    ID: Org2MSP
+    MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org2.example.com
+        Port: 9051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+
+  Orderer: &OrdererCapabilities
+    V2_0: true
+
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application:
+  Organizations:
+
+Orderer:
+  OrdererType: etcdraft
+  Addresses:
+    - orderer.example.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+
+Channel:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+Profiles:
+  SampleSingleMSPChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationCapabilities
+      Organizations:
+        - *Org1
+        - *Org2
+
+  SampleMultiMSPChannel:
+    Consortium: SampleConsortium
+    Application:
+      <<: *ApplicationCapabilities
+      Organizations:
+        - *Org1
+        - *Org2
+
+
+# ---
+
+# Explanation of configtx.yaml
+
+# 1. Organizations
+
+# Defines OrdererOrg, Org1, and Org2.
+
+# Each peer organization has MSP (Membership Service Provider) settings.
+
+# Defines Anchor Peers for cross-organization communication.
+
+
+
+# 2. Capabilities
+
+# Sets compatibility for Hyperledger Fabric v2.0.
+
+
+
+# 3. Application & Orderer Settings
+
+# Defines etcdraft as the ordering service.
+
+# Configures batch processing for transactions.
+
+
+
+# 4. Channel Policies
+
+# Defines access control policies for Readers, Writers, and Admins.
+
+
+
+# 5. Profiles
+
+# Defines SampleSingleMSPChannel and SampleMultiMSPChannel profiles.
+
+# These profiles determine network configurations for Fabric deployment.
+
+
+
+
+
+# ---
+
+# Next Steps
+
+# 1. Create crypto-config.yaml for cryptographic material generation.
+
+
+# 2. Create docker-compose.yaml to deploy Fabric network in Docker.
